@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev.Beto - Felipe Bertoncini</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --dark-bg: #0f172a;
+            --darker-bg: #020617;
+            --text-light: #f1f5f9;
+            --text-gray: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+            z-index: -2;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, var(--primary-color) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, var(--secondary-color) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, var(--accent-color) 0%, transparent 50%);
+            opacity: 0.1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(10px) rotate(-1deg); }
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(15, 23, 42, 0.9) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.95) !important;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text-light) !important;
+        }
+
+        .navbar-brand span {
+            color: var(--primary-color);
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .contact-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+            color: white !important;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 100px 0 50px;
+        }
+
+        .hero-tag {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--text-light), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .hero-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
+            color: white;
+        }
+
+        .profile-container {
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            padding: 5px;
+            position: relative;
+            animation: profileFloat 6s ease-in-out infinite;
+        }
+
+        .profile-placeholder {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--dark-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .profile-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .logoDev {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        @keyframes profileFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Floating Tech Icons */
+        .floating-tech {
+            position: absolute;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            padding: 1rem;
+            border-radius: 15px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            animation: techFloat 8s ease-in-out infinite;
+        }
+
+        .tech-1 { top: 20%; left: 10%; animation-delay: 0s; }
+        .tech-2 { top: 30%; right: 15%; animation-delay: 2s; }
+        .tech-3 { bottom: 30%; left: 20%; animation-delay: 4s; }
+        .tech-4 { bottom: 20%; right: 25%; animation-delay: 6s; }
+
+        @keyframes techFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(1deg); }
+            50% { transform: translateY(5px) rotate(-1deg); }
+            75% { transform: translateY(-10px) rotate(0.5deg); }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: var(--primary-color);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Skills Section */
+        .skills-section {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-item {
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .skill-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 100px 0;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .service-description {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .about-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-color);
+            margin: 0 auto 2rem;
+            display: block;
+        }
+
+        .about-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .about-text {
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+            color: white;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .contact-info {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            padding: 1.5rem 1rem;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .contact-item h5 {
+            color: var(--text-light);
+            font-weight: 600;
+            margin: 1rem 0 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .contact-item p {
+            color: var(--text-gray) !important;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin: 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            line-height: 1.4;
+            max-width: 100%;
+        }
+
+        .contact-item .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .profile-image {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .floating-tech {
+                display: none;
+            }
+            
+            .hero-section {
+                padding: 80px 0 30px;
+            }
+            
+            .services-section, .skills-section, .about-section, .contact-section {
+                padding: 60px 0;
+            }
+            
+            .social-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .profile-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .service-card, .contact-info {
+                padding: 1.5rem;
+            }
+            
+            .contact-item {
+                padding: 1.2rem 0.8rem;
+            }
+            
+            .contact-item p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animation"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home"><span>DEV.</span>BERTO</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto me-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skill">Habilidades</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Serviços</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about_me">Sobre</a>
+                    </li>
+                </ul>
+                <a href="#contact" class="contact-btn">Contato</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-tag">Felipe Bertoncini Franceschini</div>
+                    <h1 class="hero-title">Olá, Meu nome é Felipe</h1>
+                    <h2 class="hero-subtitle">Eu sou um Desenvolvedor</h2>
+                    <p class="hero-description">
+                        Desenvolvedor apaixonado por criar soluções digitais inovadoras. 
+                        Especializado em front-end e back-end, transformo ideias em 
+                        experiências digitais incríveis com código limpo e design moderno.
+                    </p>
+                    <a href="#contact" class="hero-btn">Entre em Contato</a>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="profile-container">
+                        <div class="profile-image">
+                            <div class="profile-placeholder">
+                                <div class="logoDev"><img src="img/perfil.jpeg" alt="FB"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating Tech Icons -->
+        <div class="floating-tech tech-1">{ }</div>
+        <div class="floating-tech tech-2">&lt;/&gt;</div>
+        <div class="floating-tech tech-3">PHP</div>
+        <div class="floating-tech tech-4">JS</div>
+        
+        <div class="scroll-indicator">
+            <i class="bi bi-arrow-down"></i>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills-section" id="skill">
+        <div class="container">
+            <h2 class="section-title">HABILIDADES</h2>
+            <div class="row">
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="skill-item">
+                        <div class="skill-icon">PHP</div>
+                        <h5>PHP</h5>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="skill-item">
+                        <div class="skill-icon">JS</div>
+                        <h5>JavaScript</h5>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="skill-item">
+                        <div class="skill-icon">PY</div>
+                        <h5>Python</h5>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="skill-item">
+                        <div class="skill-icon">Node</div>
+                        <h5>Node.js</h5>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="skill-item">
+                        <div class="skill-icon">n8n</div>
+                        <h5>n8n</h5>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="skill-item">
+                        <div class="skill-icon">SQL</div>
+                        <h5>MySQL</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section" id="services">
+        <div class="container">
+            <h2 class="section-title">Serviços</h2>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="bi bi-code-slash"></i>
+                        </div>
+                        <h3 class="service-title">Desenvolvimento Web</h3>
+                        <p class="service-description">
+                            Crio sites e sistemas funcionais com foco em usabilidade e desempenho, utilizando HTML, CSS, JavaScript e PHP.
+                            Tenho experiência em bancos de dados MySQL, design responsivo e integração com ferramentas modernas para
+                            entregar soluções completas e seguras.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="bi bi-phone"></i>
+                        </div>
+                        <h3 class="service-title">Criação de Aplicações</h3>
+                        <p class="service-description">
+                            Desenvolvo aplicações personalizadas que atendem às necessidades do negócio, desde sistemas de controle de ponto até marketplaces.
+                            Trabalho com Laravel, WordPress e integração de APIs, sempre aplicando boas práticas de código e escalabilidade.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="bi bi-gear"></i>
+                        </div>
+                        <h3 class="service-title">Automações</h3>
+                        <p class="service-description">
+                            Implemento fluxos automatizados para otimizar processos e reduzir tarefas repetitivas. Utilizo ferramentas como n8n e integrações com APIs externas,
+                            criando soluções inteligentes que aumentam a produtividade e a eficiência.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about_me">
+        <div class="container">
+            <h2 class="section-title">Sobre</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-center mb-4">
+                    <img src="img/perfil.jpeg" alt="Felipe Bertoncini" class="about-image">
+                </div>
+                
+                <div class="col-lg-8">
+                    <h2 class="about-title">Felipe Bertoncini Franceschini</h2>
+                    <p class="about-text">
+                        Me chamo Felipe, em 2022 comecei a estudar programação e até hoje me aventuro por esse mundo fantástico. 
+                        Me formei no SENAC em 2023 e curso ADS UNICSUL. Hoje atuo como Associado da Mettric Tecnologia como 
+                        Analista de redes e Desenvolvedor Web.
+                    </p>
+                    
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/dev.b3rt0" class="social-link" target="_blank">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/felipe-bertoncini-franceschini-b4b839228/" class="social-link" target="_blank">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/Bert00100" class="social-link" target="_blank">
+                            <i class="bi bi-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">Entre em Contato</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-info">
+                        <h3 class="mb-4">Vamos trabalhar juntos!</h3>
+                        <p class="mb-4">Estou sempre aberto a novos projetos e oportunidades. Entre em contato comigo através dos canais abaixo:</p>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="contact-item">
+                                    <i class="bi bi-envelope fs-2 text-primary mb-2"></i>
+                                    <h5>Email</h5>
+                                    <p class="text-muted">felipebertoncinifranceschini@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="contact-item">
+                                    <i class="bi bi-phone fs-2 text-primary mb-2"></i>
+                                    <h5>Telefone</h5>
+                                    <p class="text-muted">(11) 97407-5180</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="contact-item">
+                                    <i class="bi bi-geo-alt fs-2 text-primary mb-2"></i>
+                                    <h5>Localização</h5>
+                                    <p class="text-muted">São Paulo, SP</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="social-links mt-4">
+                            <a href="https://www.instagram.com/dev.b3rt0" class="social-link me-3" target="_blank">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/felipe-bertoncini-franceschini-b4b839228/" class="social-link me-3" target="_blank">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                            <a href="https://github.com/Bert00100" class="social-link" target="_blank">
+                                <i class="bi bi-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Parallax effect for floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelectorAll('.floating-tech');
+            const speed = 0.3;
+
+            parallax.forEach((element, index) => {
+                const yPos = -(scrolled * speed * (index + 1) * 0.5);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all skill items, service cards, and other elements
+        document.querySelectorAll('.skill-item, .service-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
